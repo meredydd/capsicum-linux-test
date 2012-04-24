@@ -1,0 +1,26 @@
+#!/bin/bash
+
+mount /proc
+mount /tests
+mount /debug
+mount / -o remount,rw
+
+export TESTRUN="`grep -oP 'runtest=(\".*\"|[^\s]+)' /proc/cmdline`"
+export TESTRUN=${TESTRUN#runtest=}
+export TESTRUN=${TESTRUN#\"}
+export TESTRUN=${TESTRUN%\"}
+
+if [ "$TESTRUN" != "" ]; then
+  echo "---- Executing: $TESTRUN ----"
+  cd /tests
+  export PATH=$PATH:.
+  sh -c "$TESTRUN"
+  halt --force
+
+  echo "THIS LINE SHOULD NEVER BE REACHED"
+  while true ; do sleep 1 ; done
+else
+  unset TESTRUN
+  echo "Starting normal init..."
+  exec /sbin/init.orig
+fi

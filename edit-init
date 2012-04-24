@@ -1,0 +1,3 @@
+#!/bin/bash
+cd `dirname $0`
+sudo mount -o loop test.img mnt/ && sudo emacs -nw mnt/sbin/init && cp -a mnt/sbin/init test-files/ && sudo umount mnt

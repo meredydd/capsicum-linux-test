@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd `dirname $0`
+
+if [ "$1" == "-v" ]; then
+    export OPTS=-v
+    shift
+fi
+
+make -C test-files/ $1 && ./run-test $OPTS $1

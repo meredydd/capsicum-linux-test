@@ -1,0 +1,9 @@
+#!/bin/bash
+cd `dirname $0`
+if [ "$1" = "" ]; then
+  echo "You must specify a test command to run on the hosted system (/tests/ maps to test-files/)"
+  echo "Usage: $0 <test-command>"
+
+  exit 1
+fi
+../linux/build/linux ubd0=test.img con0=fd:2 con1=fd:0,fd:1 con=pts mem=4096M security=capsicum runtest="\"$*\""
